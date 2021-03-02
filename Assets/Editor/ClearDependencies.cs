@@ -33,7 +33,7 @@ public class ClearDependencies : MonoBehaviour
         AssetDatabase.SaveAssets();
     }
 
-    static void ClearMatProperties()
+    public static void ClearMatProperties()
     {
         UnityEngine.Object[] objs = Selection.GetFiltered(typeof(Material), SelectionMode.DeepAssets);
         for (int i = 0; i < objs.Length; ++i)
