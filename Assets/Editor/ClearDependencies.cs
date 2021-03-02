@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ClearDependencies : MonoBehaviour
+public class ClearDependencies
 {
-    [System.Obsolete]
+    [MenuItem("Assets/Custom/CheckParticleDependency")]
     public static void CheckParticleSystemRenderer()
     {
         Object[] gos = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
         foreach (var item in gos)
         {
             // Filter non-prefab type,
-            if (PrefabUtility.GetPrefabType(item) != PrefabType.Prefab)
+            if (PrefabUtility.GetPrefabAssetType(item) == PrefabAssetType.NotAPrefab)
             {
                 continue;
             }
@@ -33,6 +33,7 @@ public class ClearDependencies : MonoBehaviour
         AssetDatabase.SaveAssets();
     }
 
+    [MenuItem("Assets/Custom/CheckMaterialDependency")]
     public static void ClearMatProperties()
     {
         UnityEngine.Object[] objs = Selection.GetFiltered(typeof(Material), SelectionMode.DeepAssets);
