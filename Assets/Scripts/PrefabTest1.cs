@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class PrefabTest1 : MonoBehaviour
 {
     public Texture tex1;
-    public Texture tex2;
+    //public Texture tex2;
 
     public Image igm1;
-    public Image igm2;
+    //public Image igm2;
     // Start is called before the first frame update
     void Start()
     {
