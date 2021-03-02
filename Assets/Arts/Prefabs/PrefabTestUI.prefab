@@ -64,7 +64,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 20bad81e8e9a3da4b8d21866da01c88f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -83,8 +83,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6733711260461042341}
+  - component: {fileID: 6733711259637626275}
   m_Layer: 0
-  m_Name: PrefabTest1
+  m_Name: PrefabTestUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,6 +107,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6733711259637626275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733711260461042342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9c404882f09ad4898295133c65c8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tex1: {fileID: 2800000, guid: 50f9159baa88cc84f847ee4145359d5f, type: 3}
+  tex2: {fileID: 2800000, guid: 46aba24759d4e8643ab1f08dec183572, type: 3}
+  igm1: {fileID: 3779124470628087940}
+  igm2: {fileID: 6733711258820919967}
 --- !u!1 &8584692747165946707
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b26234c65245bf34bb30456908b5a0c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
