@@ -13,8 +13,8 @@ Shader "Custom/Standard"
         _GlossMapScale("Smoothness Scale", Range(0.0, 1.0)) = 1.0
         [Enum(Metallic Alpha,0,Albedo Alpha,1)] _SmoothnessTextureChannel ("Smoothness texture channel", Float) = 0
 
-        [Gamma] _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
-        _MetallicGlossMap("Metallic", 2D) = "white" {}
+        //[Gamma] _Metallic("Metallic", Range(0.0, 1.0)) = 0.0
+        //_MetallicGlossMap("Metallic", 2D) = "white" {}
 
         [ToggleOff] _SpecularHighlights("Specular Highlights", Float) = 1.0
         [ToggleOff] _GlossyReflections("Glossy Reflections", Float) = 1.0
@@ -22,16 +22,16 @@ Shader "Custom/Standard"
         _BumpScale("Scale", Float) = 1.0
         [Normal] _BumpMap("Normal Map", 2D) = "bump" {}
 
-        _Parallax ("Height Scale", Range (0.005, 0.08)) = 0.02
-        _ParallaxMap ("Height Map", 2D) = "black" {}
+        //_Parallax ("Height Scale", Range (0.005, 0.08)) = 0.02
+        //_ParallaxMap ("Height Map", 2D) = "black" {}
 
-        _OcclusionStrength("Strength", Range(0.0, 1.0)) = 1.0
-        _OcclusionMap("Occlusion", 2D) = "white" {}
+        //_OcclusionStrength("Strength", Range(0.0, 1.0)) = 1.0
+        //_OcclusionMap("Occlusion", 2D) = "white" {}
 
         _EmissionColor("Color", Color) = (0,0,0)
         _EmissionMap("Emission", 2D) = "white" {}
 
-        _DetailMask("Detail Mask", 2D) = "white" {}
+        //_DetailMask("Detail Mask", 2D) = "white" {}
 
         _DetailAlbedoMap("Detail Albedo x2", 2D) = "grey" {}
         _DetailNormalMapScale("Scale", Float) = 1.0
