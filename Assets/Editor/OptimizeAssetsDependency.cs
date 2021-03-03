@@ -8,147 +8,172 @@ using UnityEditor;
 
 namespace TenentEditorTool
 {
-    public class OptimizeAssetsDependency
-    {
-        [MenuItem("Assets/OptimizeAssetsDependency/CheckCommonPrefabDependency")]
-        public static void CheckCommonPrefab()
-        {
-            string[] ids = AssetDatabase.FindAssets("t:Prefab");
-            for (int i = 0; i < ids.Length; ++i)
-            {
-                GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(ids[i]));
-                if (go != null)
-                {
-                    if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
-                    {
-                        EditorUtility.SetDirty(go);
-                    }
-                }
-            }
+	public class OptimizeAssetsDependency
+	{
+		//check select CommonPrefab dependency
+		[MenuItem("Assets/OptimizeAssetsDependency/CheckSelectionPrefabDependency")]
+		public static void CheckSelectionCommonPrefab()
+		{
+			Object[] gos = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+			foreach (var item in gos)
+			{
+				// Filter non-prefab type,
+				if (PrefabUtility.GetPrefabAssetType(item) != PrefabAssetType.NotAPrefab)
+				{
+					GameObject go = item as GameObject;
+					if (go)
+					{
+						EditorUtility.SetDirty(go);
+					}
+				}
+			}
 
-            Debug.Log("<color=green> CheckCommonPrefabDependency Success </color>");
-            AssetDatabase.SaveAssets();
-        }
+			Debug.Log("<color=green> CheckSelectionPrefabDependency Success </color>");
+			AssetDatabase.SaveAssets();
+		}
 
-        [MenuItem("Assets/OptimizeAssetsDependency/CheckParticleDependency")]
-        public static void CheckParticleSystemPrefab()
-        {
-            Object[] gos = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
-            foreach (var item in gos)
-            {
-                // Filter non-prefab type,
-                if (PrefabUtility.GetPrefabAssetType(item) != PrefabAssetType.NotAPrefab)
-                {
-                    GameObject gameObj = item as GameObject;
-                    ParticleSystemRenderer[] renders = gameObj.GetComponentsInChildren<ParticleSystemRenderer>(true);
-                    foreach (var renderItem in renders)
-                    {
-                        if (renderItem.renderMode != ParticleSystemRenderMode.Mesh)
-                        {
-                            renderItem.mesh = null;
-                            EditorUtility.SetDirty(gameObj);
-                        }
-                    }
-                }
-            }
+		//check all CommonPrefab dependency
+		[MenuItem("Assets/OptimizeAssetsDependency/CheckAllPrefabDependency")]
+		public static void CheckAllCommonPrefab()
+		{
+			string[] ids = AssetDatabase.FindAssets("t:Prefab");
+			for (int i = 0; i < ids.Length; ++i)
+			{
+				GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(ids[i]));
+				if (go != null)
+				{
+					if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+					{
+						EditorUtility.SetDirty(go);
+					}
+				}
+			}
 
-            Debug.Log("<color=green> CheckParticleDependency Success </color>");
-            AssetDatabase.SaveAssets();
-        }
+			Debug.Log("<color=green> CheckAllPrefabDependency Success </color>");
+			AssetDatabase.SaveAssets();
+		}
 
-        [MenuItem("Assets/OptimizeAssetsDependency/CheckMaterialDependency")]
-        public static void CheckMaterialPropertyDependency()
-        {
-            int iCounts = 0;
-            System.Text.StringBuilder sb = new System.Text.StringBuilder("Find and clean useless texture propreties name: ");
-            Material[] mats = Selection.GetFiltered<Material>(SelectionMode.DeepAssets);
-            for (int i = 0; i < mats.Length; ++i)
-            {
-                if (mats[i])
-                {
-                    SerializedObject psSource = new SerializedObject(mats[i]);
-                    SerializedProperty emissionProperty = psSource.FindProperty("m_SavedProperties");
-                    SerializedProperty texEnvs = emissionProperty.FindPropertyRelative("m_TexEnvs");
-                    SerializedProperty floats = emissionProperty.FindPropertyRelative("m_Floats");
-                    SerializedProperty colos = emissionProperty.FindPropertyRelative("m_Colors");
+		[MenuItem("Assets/OptimizeAssetsDependency/CheckParticleDependency")]
+		public static void CheckParticleSystemPrefab()
+		{
+			Object[] gos = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+			foreach (var item in gos)
+			{
+				// Filter non-prefab type,
+				if (PrefabUtility.GetPrefabAssetType(item) != PrefabAssetType.NotAPrefab)
+				{
+					GameObject go = item as GameObject;
+					if (go)
+					{
+						ParticleSystemRenderer[] renders = go.GetComponentsInChildren<ParticleSystemRenderer>(true);
+						foreach (var renderItem in renders)
+						{
+							if (renderItem.renderMode != ParticleSystemRenderMode.Mesh)
+							{
+								renderItem.mesh = null;
+								EditorUtility.SetDirty(go);
+							}
+						}
+					}
+				}
+			}
 
-                    bool isCount = false;
-                    if (CleanMaterialSerializedProperty(texEnvs, mats[i]))
-                    {
-                        if (!isCount && iCounts < 100)
-                        {
-                            sb.Append(" /Texture- ");
-                            sb.Append(mats[i].name);
-                        }
+			Debug.Log("<color=green> CheckParticleDependency Success </color>");
+			AssetDatabase.SaveAssets();
+		}
 
+		[MenuItem("Assets/OptimizeAssetsDependency/CheckMaterialDependency")]
+		public static void CheckMaterialPropertyDependency()
+		{
+			int iCounts = 0;
+			System.Text.StringBuilder sb = new System.Text.StringBuilder("Find and clean useless texture propreties name: ");
+			Material[] mats = Selection.GetFiltered<Material>(SelectionMode.DeepAssets);
+			for (int i = 0; i < mats.Length; ++i)
+			{
+				if (mats[i])
+				{
+					SerializedObject psSource = new SerializedObject(mats[i]);
+					SerializedProperty emissionProperty = psSource.FindProperty("m_SavedProperties");
+					SerializedProperty texEnvs = emissionProperty.FindPropertyRelative("m_TexEnvs");
+					SerializedProperty floats = emissionProperty.FindPropertyRelative("m_Floats");
+					SerializedProperty colos = emissionProperty.FindPropertyRelative("m_Colors");
 
-                        isCount = true;
-                    }
-                    if (CleanMaterialSerializedProperty(floats, mats[i]))
-                    {
-                        if (!isCount && iCounts < 100)
-                        {
-                            sb.Append(" /Value- ");
-                            sb.Append(mats[i].name);
-                        }
+					bool isCount = false;
+					if (CleanMaterialSerializedProperty(texEnvs, mats[i]))
+					{
+						if (!isCount && iCounts < 1000)
+						{
+							sb.Append(" /Texture- ");
+							sb.Append(mats[i].name);
+						}
 
-                        isCount = true;
-                    }
-                    if (CleanMaterialSerializedProperty(colos, mats[i]))
-                    {
-                        if (!isCount && iCounts < 100)
-                        {
-                            sb.Append(" /Color- ");
-                            sb.Append(mats[i].name);
-                        }
+						isCount = true;
+					}
+					//if (CleanMaterialSerializedProperty(floats, mats[i]))
+					//{
+					//	if (!isCount && iCounts < 1000)
+					//	{
+					//		sb.Append(" /Value- ");
+					//		sb.Append(mats[i].name);
+					//	}
 
-                        isCount = true;
-                    }
+					//	isCount = true;
+					//}
+					//if (CleanMaterialSerializedProperty(colos, mats[i]))
+					//{
+					//	if (!isCount && iCounts < 1000)
+					//	{
+					//		sb.Append(" /Color- ");
+					//		sb.Append(mats[i].name);
+					//	}
 
-                    if (isCount)
-                    {
-                        iCounts++;
-                    }
+					//	isCount = true;
+					//}
 
-                    psSource.ApplyModifiedProperties();
-                    EditorUtility.SetDirty(mats[i]);
-                }
-            }
+					if (isCount)
+					{
+						iCounts++;
+					}
 
-            Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: {(iCounts > 100 ? 99 : iCounts)}</color>");
-            Debug.Log($"<color=green>CheckMaterialPropertyDependency success useless propeties names: {sb.ToString()}</color>");
+					psSource.ApplyModifiedProperties();
+					EditorUtility.SetDirty(mats[i]);
+				}
+			}
 
-            AssetDatabase.SaveAssets();
-        }
+			Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: {(iCounts > 1000 ? 999 : iCounts)}</color>");
+			Debug.Log($"<color=green>CheckMaterialPropertyDependency success useless propeties names: {sb.ToString()}</color>");
 
-        private static bool CleanMaterialSerializedProperty(SerializedProperty property_, Material mat_)
-        {
-            bool isFind = false;
+			AssetDatabase.SaveAssets();
+		}
 
-            for (int i = property_.arraySize - 1; i >= 0; i--)
-            {
-                string propertyName = property_.GetArrayElementAtIndex(i).FindPropertyRelative("first").stringValue;
+		private static bool CleanMaterialSerializedProperty(SerializedProperty property_, Material mat_)
+		{
+			bool isFind = false;
 
-                if (!mat_.HasProperty(propertyName))
-                {
-                    if (propertyName.Equals("_MainTex"))
-                    {
-                        if (property_.GetArrayElementAtIndex(i).FindPropertyRelative("second").FindPropertyRelative("m_Texture").objectReferenceValue != null)
-                        {
-                            property_.GetArrayElementAtIndex(i).FindPropertyRelative("second").FindPropertyRelative("m_Texture").objectReferenceValue = null;
-                            isFind = true;
-                        }
-                    }
-                    else
-                    {
-                        property_.DeleteArrayElementAtIndex(i);
-                        isFind = true;
-                    }
-                }
-            }
+			for (int i = property_.arraySize - 1; i >= 0; i--)
+			{
+				string propertyName = property_.GetArrayElementAtIndex(i).FindPropertyRelative("first").stringValue;
 
-            return isFind;
-        }
-    }
+				if (!mat_.HasProperty(propertyName))
+				{
+					if (propertyName.Equals("_MainTex"))
+					{
+						if (property_.GetArrayElementAtIndex(i).FindPropertyRelative("second").FindPropertyRelative("m_Texture").objectReferenceValue != null)
+						{
+							property_.GetArrayElementAtIndex(i).FindPropertyRelative("second").FindPropertyRelative("m_Texture").objectReferenceValue = null;
+							isFind = true;
+						}
+					}
+					else
+					{
+						property_.DeleteArrayElementAtIndex(i);
+						isFind = true;
+					}
+				}
+			}
+
+			return isFind;
+		}
+	}
 
 }
