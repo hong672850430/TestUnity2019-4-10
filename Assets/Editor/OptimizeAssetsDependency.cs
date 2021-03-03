@@ -75,22 +75,32 @@ namespace TenentEditorTool
                     bool isCount = false;
                     if (CleanMaterialSerializedProperty(texEnvs, mats[i]))
                     {
-                        sb.Append(" /Texture- ");
-                        sb.Append(mats[i].name);
+                        if (!isCount && iCounts < 100)
+                        {
+                            sb.Append(" /Texture- ");
+                            sb.Append(mats[i].name);
+                        }
+
 
                         isCount = true;
                     }
                     if (CleanMaterialSerializedProperty(floats, mats[i]))
                     {
-                        sb.Append(" /Value- ");
-                        sb.Append(mats[i].name);
+                        if (!isCount && iCounts < 100)
+                        {
+                            sb.Append(" /Value- ");
+                            sb.Append(mats[i].name);
+                        }
 
                         isCount = true;
                     }
                     if (CleanMaterialSerializedProperty(colos, mats[i]))
                     {
-                        sb.Append(" /Color- ");
-                        sb.Append(mats[i].name);
+                        if (!isCount && iCounts < 100)
+                        {
+                            sb.Append(" /Color- ");
+                            sb.Append(mats[i].name);
+                        }
 
                         isCount = true;
                     }
@@ -105,7 +115,7 @@ namespace TenentEditorTool
                 }
             }
 
-            Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: {iCounts.ToString()}</color>");
+            Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: {(iCounts > 100 ? 99 : iCounts)}</color>");
             Debug.Log($"<color=green>CheckMaterialPropertyDependency success useless propeties names: {sb.ToString()}</color>");
 
             AssetDatabase.SaveAssets();
