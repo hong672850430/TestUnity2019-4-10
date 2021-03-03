@@ -105,8 +105,8 @@ namespace TenentEditorTool
                 }
             }
 
-            Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: iCounts.ToString()</color>");
-            Debug.Log($"<color=green>CheckMaterialPropertyDependency success useless propeties names: sb.ToString()</color>");
+            Debug.Log($"<color=green>CheckMaterialPropertyDependency success counts: {iCounts.ToString()}</color>");
+            Debug.Log($"<color=green>CheckMaterialPropertyDependency success useless propeties names: {sb.ToString()}</color>");
 
             AssetDatabase.SaveAssets();
         }

@@ -395,7 +395,7 @@ namespace UnityEditor
                 SetKeyword(material, "_SPECGLOSSMAP", material.GetTexture("_SpecGlossMap"));
             else if (workflowMode == WorkflowMode.Metallic)
                 SetKeyword(material, "_METALLICGLOSSMAP", material.GetTexture("_MetallicGlossMap"));
-            SetKeyword(material, "_PARALLAXMAP", material.GetTexture("_ParallaxMap"));
+            //SetKeyword(material, "_PARALLAXMAP", material.GetTexture("_ParallaxMap"));
             SetKeyword(material, "_DETAIL_MULX2", material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap"));
 
             // A material's GI flag internally keeps track of whether emission is enabled at all, it's enabled but has no effect
