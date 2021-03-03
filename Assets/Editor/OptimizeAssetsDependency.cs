@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEditor;
 
 //https://docs.unity3d.com/ScriptReference/SerializedObject.html
-public class ClearDependencies
+public class OptimizeAssetsDependency
 {
-    [MenuItem("Assets/Custom/CheckParticleDependency")]
-    public static void CheckParticleSystemRenderer()
+    [MenuItem("Assets/OptimizeAssetsDependency/CheckParticleDependency")]
+    public static void CheckParticleSystemPrefab()
     {
         Object[] gos = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
         foreach (var item in gos)
@@ -19,7 +19,6 @@ public class ClearDependencies
             }
 
             GameObject gameObj = item as GameObject;
-
             ParticleSystemRenderer[] renders = gameObj.GetComponentsInChildren<ParticleSystemRenderer>(true);
             foreach (var renderItem in renders)
             {
@@ -34,8 +33,8 @@ public class ClearDependencies
         AssetDatabase.SaveAssets();
     }
 
-    [MenuItem("Assets/Custom/CheckMaterialDependency")]
-    public static void ClearMatProperties()
+    [MenuItem("Assets/OptimizeAssetsDependency/CheckMaterialDependency")]
+    public static void CheckMaterialPropertyDependency()
     {
         UnityEngine.Object[] objs = Selection.GetFiltered(typeof(Material), SelectionMode.DeepAssets);
         for (int i = 0; i < objs.Length; ++i)
@@ -96,6 +95,27 @@ public class ClearDependencies
         }
         return res;
     }
+
+    [MenuItem("Assets/OptimizeAssetsDependency/CheckCommonPrefabDependency")]
+    public static void CheckCommonPrefab()
+    {
+        string[] ids = AssetDatabase.FindAssets("t:Prefab");
+        for (int i = 0; i < ids.Length; ++i)
+        {
+            GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(ids[i]));
+            if (go != null)
+            {
+                if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
+                {
+                    EditorUtility.SetDirty(go);
+                }
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+    }
+
+
 
     [MenuItem("Tools/CleanMaterial")]
     public static void MaterialCleanTools()
