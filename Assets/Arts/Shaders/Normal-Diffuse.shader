@@ -5,7 +5,7 @@ Properties {
     _Color ("Main Color", Color) = (1,1,1,1)
     _MainTex ("Base (RGB)", 2D) = "white" {}
 	_MainTexColor ("Main Texture Color", Color) = (1,1,1,1)
-    _TestTex ("TestTex (2D)", 2D) = "while" {}
+    //_TestTex ("TestTex (2D)", 2D) = "while" {}
 }
 SubShader {
     Tags { "RenderType"="Opaque" }
